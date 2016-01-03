@@ -17,6 +17,10 @@
 @end
 
 @implementation ViewController
+- (IBAction)btnTapped:(id)sender {
+    [self requestPermissionToNotify];
+    [self createNotification:5];
+}
 
 - (void)requestPermissionToNotify{
     UIUserNotificationType type = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
