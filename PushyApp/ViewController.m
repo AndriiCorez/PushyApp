@@ -23,8 +23,26 @@
 }
 
 - (void)requestPermissionToNotify{
+    UIMutableUserNotificationAction *floatAction = [[UIMutableUserNotificationAction alloc] init];
+    floatAction.identifier = @"Float action";
+    floatAction.activationMode = UIUserNotificationActivationModeBackground;
+    floatAction.destructive = YES;
+    floatAction.authenticationRequired = NO;
+    
+    UIMutableUserNotificationAction *stingAction = [[UIMutableUserNotificationAction alloc] init];
+    stingAction.identifier = @"sting action";
+    stingAction.activationMode = UIUserNotificationActivationModeBackground;
+    stingAction.destructive = NO;
+    stingAction.authenticationRequired = NO;
+    
+    UIMutableUserNotificationCategory *responseCategory = [[UIMutableUserNotificationCategory alloc] init];
+    responseCategory.identifier = @"Main category";
+    [responseCategory setActions:@[floatAction, stingAction] forContext:UIUserNotificationActionContextDefault];
+    
+    NSSet *categories = [NSSet setWithObjects:responseCategory, nil];
+    
     UIUserNotificationType type = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type categories:categories];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 }
 
@@ -36,6 +54,7 @@
     localNtf.alertAction = @"OK";
     localNtf.soundName = UILocalNotificationDefaultSoundName;
     localNtf.applicationIconBadgeNumber = 666;
+    localNtf.category = @"MAIN_Category";
     
     [[UIApplication sharedApplication] scheduleLocalNotification:localNtf];
 }
