@@ -14,9 +14,33 @@
 
 @implementation AppDelegate
 
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    
+    application.applicationIconBadgeNumber = 0;
+    
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"Received on running" message:notification.alertBody preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *aa = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [ac addAction:aa];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [application.keyWindow.rootViewController presentViewController:ac animated:YES completion:nil];
+    });
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    application.applicationIconBadgeNumber = 0;
+    
+    UILocalNotification *localNotif = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+    if(localNotif){
+        UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"Received on launch" message:localNotif.alertBody preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *aa = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [ac addAction:aa];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [application.keyWindow.rootViewController presentViewController:ac animated:YES completion:nil];
+        });
+    }
     return YES;
 }
 
