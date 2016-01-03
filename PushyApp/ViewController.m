@@ -10,9 +10,31 @@
 
 @interface ViewController ()
 
+- (void)requestPermissionToNotify;
+
+- (void)createNotification:(int)seconds;
+
 @end
 
 @implementation ViewController
+
+- (void)requestPermissionToNotify{
+    UIUserNotificationType type = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+}
+
+- (void)createNotification:(int)seconds{
+    UILocalNotification *localNtf = [[UILocalNotification alloc] init];
+    localNtf.fireDate = [[NSDate date] dateByAddingTimeInterval:seconds];
+    localNtf.timeZone = nil;
+    localNtf.alertBody = @"body";
+    localNtf.alertAction = @"OK";
+    localNtf.soundName = UILocalNotificationDefaultSoundName;
+    localNtf.applicationIconBadgeNumber = 666;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNtf];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
